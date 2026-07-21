@@ -2,7 +2,8 @@
   "name": "emerald-management-site",
   "private": true,
   "scripts": {
-    "start": "swa start ."
+    "start": "swa start .",
+    "build": "echo \"Static site - no build step required\""
   },
   "devDependencies": {
     "@azure/static-web-apps-cli": "^2.0.9"
