@@ -1,13 +1,14 @@
 :root {
   --emerald: #0e2216;      /* Deep Emerald Green — headings, logo, icons, primary dark surfaces */
-  --emerald-2: #2d4831;    /* Forest Green — secondary icons, accents, nav text */
-  --sage-btn: #3d6948;     /* Muted Sage Green — buttons, graphics, subtle accents */
+  --emerald-2: #09301f;    /* Forest Green — footer, industry cards, accents, nav text */
+  --sage-btn: #09301f;     /* Forest Green — icon badge backgrounds, buttons, accents */
   --sage: #c5cdbc;         /* Soft Sage — background boxes */
   --light-sage: #bac7b6;   /* Light Sage — secondary backgrounds */
   --cream: #edeeea;        /* Off White — main background */
-  --gold: #d3a64a;         /* Light Gold — highlights and decorative elements */
+  --gold: #b8892a;         /* Light Gold — highlights and decorative elements */
   --gold-dark: #9c916e;    /* Muted Gold — fine line accents */
   --gold-champagne: #c9a66b; /* Champagne Gold — button fills */
+  --gold-vibrant: #b8892a; /* Vibrant Metallic Gold — icon badge glyphs */
   --text: #495937;         /* Dark Olive — body text */
   --line: #a2a59c;         /* Warm Gray — neutral borders/dividers */
   --shadow: 0 10px 30px rgba(14, 34, 22, 0.08);
@@ -174,7 +175,7 @@ section { padding: 64px 0; }
   height: 60px;
   flex: 0 0 auto;
   background: var(--sage-btn);
-  color: var(--gold);
+  color: var(--gold-vibrant);
   font-size: 1.4rem;
 }
 .service-group-header h3 { font-size: 1.35rem; margin: 0 0 4px; }
@@ -206,7 +207,7 @@ section { padding: 64px 0; }
   height: 44px;
   flex: 0 0 auto;
   background: var(--sage-btn);
-  color: var(--gold);
+  color: var(--gold-vibrant);
   font-size: 1.05rem;
 }
 .svc-text { flex: 1 1 auto; min-width: 0; }
@@ -260,7 +261,7 @@ section { padding: 64px 0; }
   height: 56px;
   margin: 0 auto 14px;
   background: var(--sage);
-  color: var(--gold);
+  color: var(--gold-vibrant);
   font-size: 1.3rem;
 }
 .industry-card h3 { font-size: 0.98rem; margin: 0 0 8px; line-height: 1.25; color: #fff; }
@@ -299,7 +300,7 @@ section { padding: 64px 0; }
   width: 42px;
   height: 42px;
   background: var(--sage-btn);
-  color: var(--gold);
+  color: var(--gold-vibrant);
   font-family: "Cormorant Garamond", serif;
   font-weight: 700;
   font-size: 1.55rem;
