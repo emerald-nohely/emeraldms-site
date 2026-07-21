@@ -1,0 +1,10 @@
+{
+  "name": "emerald-management-site",
+  "private": true,
+  "scripts": {
+    "start": "swa start ."
+  },
+  "devDependencies": {
+    "@azure/static-web-apps-cli": "^2.0.9"
+  }
+}

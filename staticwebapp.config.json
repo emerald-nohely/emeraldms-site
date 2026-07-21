@@ -1,0 +1,12 @@
+{
+  "routes": [
+    { "route": "/index.html", "redirect": "/", "statusCode": 301 }
+  ],
+  "trailingSlash": "never",
+  "globalHeaders": {
+    "Cache-Control": "public, max-age=3600",
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "DENY",
+    "Referrer-Policy": "strict-origin-when-cross-origin"
+  }
+}

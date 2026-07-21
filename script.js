@@ -1,0 +1,153 @@
+// How long to wait after scrollIntoView() before starting the spotlight
+// flash, so it doesn't fire mid-scroll.
+const SCROLL_SETTLE_DELAY_MS = 500;
+// How long the footer contact spotlight stays dimmed/flashing.
+const SPOTLIGHT_DURATION_MS = 2000;
+// How long the "opening your email client" status message shows before the
+// modal auto-closes.
+const MODAL_CLOSE_DELAY_MS = 1800;
+
+document.addEventListener("DOMContentLoaded", () => {
+  const menuBtn = document.querySelector(".menu-btn");
+  const nav = document.querySelector("nav");
+
+  menuBtn.addEventListener("click", () => {
+    const isOpen = nav.classList.toggle("open");
+    menuBtn.setAttribute("aria-expanded", isOpen);
+  });
+
+  nav.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      nav.classList.remove("open");
+      menuBtn.setAttribute("aria-expanded", "false");
+    });
+  });
+
+  // Highlight the nav link matching the section currently in view
+  const sections = document.querySelectorAll("main section[id]");
+  const navLinks = document.querySelectorAll("nav a:not(.nav-cta)");
+
+  const setActiveLink = (id) => {
+    navLinks.forEach((link) => {
+      link.classList.toggle("active", link.getAttribute("href") === `#${id}`);
+    });
+  };
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) setActiveLink(entry.target.id);
+      });
+    },
+    { rootMargin: "-45% 0px -50% 0px" }
+  );
+
+  sections.forEach((section) => observer.observe(section));
+
+  // Service cards: clicking anywhere outside an open card closes it.
+  // Track open cards via the native "toggle" event instead of querying the
+  // DOM on every click.
+  const openSvcCards = new Set();
+  document.querySelectorAll(".svc-card").forEach((card) => {
+    card.addEventListener("toggle", () => {
+      if (card.open) openSvcCards.add(card);
+      else openSvcCards.delete(card);
+    });
+  });
+  document.addEventListener("click", (event) => {
+    openSvcCards.forEach((card) => {
+      if (!card.contains(event.target)) card.open = false;
+    });
+  });
+
+  // "Contact Us" nav link: scroll to the footer contact column and spotlight it.
+  const contactNavLink = document.querySelector(".js-highlight-contact");
+  const footerContact = document.getElementById("footer-contact");
+  if (contactNavLink && footerContact) {
+    const dimOverlay = document.createElement("div");
+    dimOverlay.className = "page-dim-overlay";
+    document.body.appendChild(dimOverlay);
+    let spotlightTimeout = null;
+
+    contactNavLink.addEventListener("click", (event) => {
+      event.preventDefault();
+      footerContact.scrollIntoView({ behavior: "smooth", block: "center" });
+
+      clearTimeout(spotlightTimeout);
+      dimOverlay.classList.remove("active");
+      footerContact.classList.remove("spotlight-target");
+
+      spotlightTimeout = setTimeout(() => {
+        dimOverlay.classList.add("active");
+        // Force reflow so the flash animation restarts if triggered again.
+        void footerContact.offsetWidth;
+        footerContact.classList.add("spotlight-target");
+
+        spotlightTimeout = setTimeout(() => {
+          dimOverlay.classList.remove("active");
+          footerContact.classList.remove("spotlight-target");
+        }, SPOTLIGHT_DURATION_MS);
+      }, SCROLL_SETTLE_DELAY_MS);
+    });
+  }
+
+  // Consultation request modal
+  const modal = document.getElementById("consultation-modal");
+  const modalForm = document.getElementById("consultation-form");
+  const modalStatus = document.getElementById("modal-status");
+  const openTriggers = document.querySelectorAll(".js-open-modal");
+  const closeBtn = modal.querySelector(".modal-close");
+  let lastFocused = null;
+
+  const openModal = (event) => {
+    event.preventDefault();
+    lastFocused = document.activeElement;
+    modal.classList.add("open");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("modal-open");
+    modalForm.querySelector('input[name="name"]').focus();
+  };
+
+  const closeModal = () => {
+    modal.classList.remove("open");
+    modal.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("modal-open");
+    if (lastFocused) lastFocused.focus();
+  };
+
+  openTriggers.forEach((trigger) => trigger.addEventListener("click", openModal));
+  closeBtn.addEventListener("click", closeModal);
+  modal.addEventListener("click", (event) => {
+    if (event.target === modal) closeModal();
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && modal.classList.contains("open")) closeModal();
+  });
+
+  modalForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const data = new FormData(modalForm);
+    const name = data.get("name").trim();
+    const email = data.get("email").trim();
+    const phone = data.get("phone").trim();
+    const message = data.get("message").trim();
+
+    const subject = `Consultation Request from ${name}`;
+    const body =
+      `Name: ${name}\n` +
+      `Email: ${email}\n` +
+      `Phone: ${phone || "Not provided"}\n\n` +
+      `Message:\n${message}`;
+
+    window.location.href =
+      `mailto:info@emeraldmanagementsolutions.org?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    modalStatus.hidden = false;
+    modalStatus.textContent = "Opening your email client to send this request…";
+    setTimeout(() => {
+      closeModal();
+      modalForm.reset();
+      modalStatus.hidden = true;
+    }, MODAL_CLOSE_DELAY_MS);
+  });
+});
