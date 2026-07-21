@@ -117,7 +117,7 @@ nav a:hover:after {
 .hero-grid { display: grid; grid-template-columns: 1fr 1.1fr; min-height: 400px; align-items: center; }
 .hero-copy { padding: 56px 56px 44px 0; display: flex; flex-direction: column; justify-content: center; }
 h1 { font-size: clamp(2.45rem, 4.5vw, 4.3rem); line-height: 1.05; margin: 0 0 22px; letter-spacing: -0.02em; }
-.hero-copy h1 { color: var(--emerald-2); }
+.hero-copy h1 { color: var(--emerald-2); white-space: nowrap; }
 .gold-rule { width: 46px; height: 2px; background: var(--gold-dark); margin: 0 0 20px; }
 .hero-copy p { font-size: 1.05rem; max-width: 590px; margin: 0 0 18px; }
 .tagline { font-size: 1.28rem !important; color: var(--emerald); margin-top: 6px !important; }
@@ -676,6 +676,7 @@ body.modal-open { overflow: hidden; }
   .menu-btn { display: block; }
   .hero-grid { grid-template-columns: 1fr; }
   .hero-copy { padding: 52px 0 30px; }
+  .hero-copy h1 { white-space: normal; }
   .hero-image { min-height: 360px; clip-path: none; }
   .svc-grid, .svc-grid-3 { grid-template-columns: 1fr; }
   .industry-grid { grid-template-columns: repeat(3, 1fr); }
