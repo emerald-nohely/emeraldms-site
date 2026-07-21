@@ -117,8 +117,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   openTriggers.forEach((trigger) => trigger.addEventListener("click", openModal));
   closeBtn.addEventListener("click", closeModal);
+  // Only close on a genuine backdrop click - not a text-selection drag that
+  // starts inside the modal and ends (mouseup) outside it, which would
+  // otherwise fire a click event targeting the overlay.
+  let modalMouseDownOnOverlay = false;
+  modal.addEventListener("mousedown", (event) => {
+    modalMouseDownOnOverlay = event.target === modal;
+  });
   modal.addEventListener("click", (event) => {
-    if (event.target === modal) closeModal();
+    if (event.target === modal && modalMouseDownOnOverlay) closeModal();
   });
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && modal.classList.contains("open")) closeModal();
