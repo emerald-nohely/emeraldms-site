@@ -1,6 +1,9 @@
 {
   "routes": [
-    { "route": "/index.html", "redirect": "/", "statusCode": 301 }
+    { "route": "/index.html", "redirect": "/", "statusCode": 301 },
+    { "route": "/script.js", "headers": { "Cache-Control": "public, max-age=300, must-revalidate" } },
+    { "route": "/styles.css", "headers": { "Cache-Control": "public, max-age=300, must-revalidate" } },
+    { "route": "/", "headers": { "Cache-Control": "public, max-age=300, must-revalidate" } }
   ],
   "trailingSlash": "never",
   "globalHeaders": {

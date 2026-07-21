@@ -1,4 +1,5 @@
 const RECIPIENT_EMAIL = "info@emeraldmanagementsolutions.org";
+const SENDER_EMAIL = "site-submission@emeraldmanagementsolutions.org";
 
 function escapeHtml(value) {
   return String(value).replace(/[&<>"']/g, (char) => (
@@ -53,7 +54,7 @@ module.exports = async function (context, req) {
 
   const payload = {
     personalizations: [{ to: [{ email: RECIPIENT_EMAIL }] }],
-    from: { email: RECIPIENT_EMAIL, name: "Emerald Management Solutions Website" },
+    from: { email: SENDER_EMAIL, name: "Emerald Management Solutions Website" },
     reply_to: { email, name },
     subject: `Consultation Request from ${name}`,
     content: [{ type: "text/html", value: htmlBody }],
