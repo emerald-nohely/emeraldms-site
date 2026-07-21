@@ -2,7 +2,8 @@ node_modules/
 .swa/
 # Excluded from deployment: local-dev-only, its presence makes Azure's
 # Oryx builder mis-detect this static site as a Node app to build.
-package.json
+# Root-anchored so it doesn't also match api/package.json, which is needed.
+/package.json
 # Excluded from deployment: unreferenced source/draft assets kept locally only.
 E-logo.jpeg
 Emerald-logo - noBG.png

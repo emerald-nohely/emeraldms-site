@@ -1,0 +1,6 @@
+{
+  "name": "emerald-consultation-api",
+  "version": "1.0.0",
+  "private": true,
+  "main": "schedule-consultation/index.js"
+}

@@ -124,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (event.key === "Escape" && modal.classList.contains("open")) closeModal();
   });
 
-  modalForm.addEventListener("submit", (event) => {
+  modalForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     const data = new FormData(modalForm);
     const name = data.get("name").trim();
@@ -132,22 +132,31 @@ document.addEventListener("DOMContentLoaded", () => {
     const phone = data.get("phone").trim();
     const message = data.get("message").trim();
 
-    const subject = `Consultation Request from ${name}`;
-    const body =
-      `Name: ${name}\n` +
-      `Email: ${email}\n` +
-      `Phone: ${phone || "Not provided"}\n\n` +
-      `Message:\n${message}`;
-
-    window.location.href =
-      `mailto:info@emeraldmanagementsolutions.org?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-
+    const submitBtn = modalForm.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
     modalStatus.hidden = false;
-    modalStatus.textContent = "Opening your email client to send this request…";
-    setTimeout(() => {
-      closeModal();
-      modalForm.reset();
-      modalStatus.hidden = true;
-    }, MODAL_CLOSE_DELAY_MS);
+    modalStatus.textContent = "Sending your request…";
+
+    try {
+      const response = await fetch("/api/schedule-consultation", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, phone, message }),
+      });
+
+      if (!response.ok) throw new Error("Request failed");
+
+      modalStatus.textContent = "Thanks! We'll be in touch shortly.";
+      setTimeout(() => {
+        closeModal();
+        modalForm.reset();
+        modalStatus.hidden = true;
+        submitBtn.disabled = false;
+      }, MODAL_CLOSE_DELAY_MS);
+    } catch (err) {
+      modalStatus.textContent =
+        "Something went wrong. Please email us directly at info@emeraldmanagementsolutions.org.";
+      submitBtn.disabled = false;
+    }
   });
 });
