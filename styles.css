@@ -611,6 +611,7 @@ body.modal-open { overflow: hidden; }
   transform: translateY(-12px);
   transition: transform 0.2s ease;
 }
+.modal.modal-intake { width: min(820px, 100%); }
 .modal-overlay.open .modal { transform: translateY(0); }
 .modal-close {
   position: absolute;
@@ -641,7 +642,8 @@ body.modal-open { overflow: hidden; }
   gap: 6px;
 }
 .modal-form input,
-.modal-form textarea {
+.modal-form textarea,
+.modal-form select {
   font: inherit;
   font-family: "Montserrat", Arial, sans-serif;
   font-weight: 400;
@@ -652,10 +654,112 @@ body.modal-open { overflow: hidden; }
   background: var(--cream);
 }
 .modal-form input:focus,
-.modal-form textarea:focus { outline: 2px solid var(--gold); outline-offset: 1px; border-color: var(--gold); }
-.modal-form textarea { resize: vertical; min-height: 90px; }
-.modal-form .btn { margin-top: 6px; align-self: flex-start; cursor: pointer; }
-.modal-status { margin: 12px 0 0; font-size: 0.85rem; color: var(--emerald-2); font-weight: 600; }
+.modal-form textarea:focus,
+.modal-form select:focus { outline: 2px solid var(--gold); outline-offset: 1px; border-color: var(--gold); }
+.modal-form textarea { resize: vertical; min-height: 70px; }
+.modal-form .btn { cursor: pointer; }
+.modal-status { margin: 4px 0 0; font-size: 0.85rem; color: var(--emerald-2); font-weight: 600; }
+
+/* Consultation intake form sections */
+.im-section {
+  border: 0;
+  border-top: 1px solid var(--line);
+  padding: 18px 0 0;
+  margin: 0;
+  min-width: 0;
+}
+.im-section:first-child { border-top: 0; padding-top: 0; }
+.im-section legend {
+  display: block;
+  width: 100%;
+  padding: 0 0 12px;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--emerald-2);
+}
+.im-hint { margin: -8px 0 12px; font-size: 0.82rem; color: var(--text); font-weight: 400; text-transform: none; letter-spacing: 0; }
+.im-subgroup-title {
+  margin: 4px 0 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--gold-dark);
+}
+.im-subgroup-title:not(:first-of-type) { margin-top: 18px; }
+.im-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+.im-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.im-grid-address { margin-top: 14px; grid-template-columns: repeat(3, 1fr); }
+.im-field { display: flex; flex-direction: column; gap: 6px; }
+.im-field label {
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--emerald);
+}
+.im-field-full { grid-column: 1 / -1; }
+.im-check-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px 16px;
+}
+.im-check {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.86rem;
+  font-weight: 400 !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  color: var(--text);
+  cursor: pointer;
+}
+.im-check input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  accent-color: var(--sage-btn);
+  padding: 0;
+}
+.im-consent {
+  margin-top: 6px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  align-items: flex-start !important;
+  font-size: 0.85rem;
+}
+.im-consent input[type="checkbox"] { margin-top: 3px; }
+.im-actions { display: flex; align-items: center; gap: 14px; margin-top: 6px; }
+.im-btn-secondary { background: none; border-color: var(--line); color: var(--text); }
+.im-btn-secondary:hover { background: var(--cream); }
+
+/* Flatpickr theme alignment */
+.flatpickr-calendar {
+  box-shadow: 0 12px 30px rgba(14, 34, 22, 0.2);
+  border-radius: 8px;
+}
+.flatpickr-day.selected,
+.flatpickr-day.selected:hover {
+  background: var(--sage-btn);
+  border-color: var(--sage-btn);
+}
+.flatpickr-day.today { border-color: var(--gold); }
+.flatpickr-day:hover { background: var(--sage); }
+.flatpickr-months .flatpickr-month,
+.flatpickr-current-month .flatpickr-monthDropdown-months,
+.flatpickr-current-month input.cur-year {
+  color: var(--emerald-2);
+}
+.flatpickr-current-month input.cur-year { font-family: "Montserrat", Arial, sans-serif; }
+span.flatpickr-weekday { color: var(--emerald-2); }
+.flatpickr-day.selected.today { border-color: var(--sage-btn); }
 
 /* Responsive */
 @media (max-width: 900px) {
@@ -691,6 +795,9 @@ body.modal-open { overflow: hidden; }
   .about-reasons-grid { grid-template-columns: 1fr 1fr; }
   .about-beliefs:before { font-size: 180px; top: -40px; }
   .about-beliefs:after { width: 100px; height: 100px; }
+  .modal.modal-intake { width: min(600px, 100%); }
+  .im-grid, .im-grid-3, .im-grid-address { grid-template-columns: 1fr 1fr; }
+  .im-check-grid { grid-template-columns: 1fr 1fr; }
 }
 
 @media (max-width: 600px) {
@@ -709,6 +816,8 @@ body.modal-open { overflow: hidden; }
   .section-title h2 { font-size: 1.25rem; text-align: center; }
   .section-title span { width: 32px; }
   .modal { padding: 28px 22px; }
+  .im-grid, .im-grid-3, .im-grid-address, .im-check-grid { grid-template-columns: 1fr; }
+  .im-actions { flex-direction: column-reverse; align-items: stretch; }
   .service-group-header { flex-direction: column; align-items: flex-start; gap: 10px; }
   .svc-card summary { align-items: flex-start; }
   .svc-list { padding-left: 20px; }

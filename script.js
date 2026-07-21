@@ -99,13 +99,54 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeBtn = modal.querySelector(".modal-close");
   let lastFocused = null;
 
+  const datePicker = window.flatpickr
+    ? window.flatpickr("#consult-date", {
+        dateFormat: "Y-m-d",
+        altInput: true,
+        altFormat: "F j, Y",
+        minDate: "today",
+      })
+    : null;
+  modalForm.addEventListener("reset", () => {
+    if (datePicker) setTimeout(() => datePicker.clear(), 0);
+  });
+
+  // Populate the preferred-time dropdown with 15-minute slots, 7 AM-7 PM.
+  const timeSelect = document.getElementById("consult-time");
+  for (let minutes = 7 * 60; minutes <= 19 * 60; minutes += 15) {
+    const hour24 = Math.floor(minutes / 60);
+    const minute = minutes % 60;
+    const period = hour24 < 12 ? "AM" : "PM";
+    const hour12 = hour24 % 12 === 0 ? 12 : hour24 % 12;
+    const value = `${String(hour24).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
+    const option = document.createElement("option");
+    option.value = value;
+    option.textContent = `${hour12}:${String(minute).padStart(2, "0")} ${period}`;
+    timeSelect.appendChild(option);
+  }
+
+  // Format as (XXX) XXX-XXXX while typing.
+  const phoneInput = document.getElementById("consult-phone");
+  phoneInput.addEventListener("input", () => {
+    const digits = phoneInput.value.replace(/\D/g, "").slice(0, 10);
+    let formatted = digits;
+    if (digits.length > 6) {
+      formatted = `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+    } else if (digits.length > 3) {
+      formatted = `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
+    } else if (digits.length > 0) {
+      formatted = `(${digits}`;
+    }
+    phoneInput.value = formatted;
+  });
+
   const openModal = (event) => {
     event.preventDefault();
     lastFocused = document.activeElement;
     modal.classList.add("open");
     modal.setAttribute("aria-hidden", "false");
     document.body.classList.add("modal-open");
-    modalForm.querySelector('input[name="name"]').focus();
+    modalForm.querySelector('input[name="businessName"]').focus();
   };
 
   const closeModal = () => {
@@ -134,10 +175,14 @@ document.addEventListener("DOMContentLoaded", () => {
   modalForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     const data = new FormData(modalForm);
-    const name = data.get("name").trim();
-    const email = data.get("email").trim();
-    const phone = data.get("phone").trim();
-    const message = data.get("message").trim();
+    const payload = {};
+    for (const [key, value] of data.entries()) {
+      if (key in payload) {
+        payload[key] = Array.isArray(payload[key]) ? [...payload[key], value] : [payload[key], value];
+      } else {
+        payload[key] = value;
+      }
+    }
 
     const submitBtn = modalForm.querySelector('button[type="submit"]');
     submitBtn.disabled = true;
@@ -148,7 +193,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const response = await fetch("/api/schedule-consultation", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, phone, message }),
+        body: JSON.stringify(payload),
       });
 
       if (!response.ok) throw new Error("Request failed");
