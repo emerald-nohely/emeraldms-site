@@ -664,21 +664,22 @@ body.modal-open { overflow: hidden; }
 .im-section {
   border: 0;
   border-top: 1px solid var(--line);
-  padding: 18px 0 0;
-  margin: 0;
+  padding: 0;
+  margin: 36px 0 0;
   min-width: 0;
 }
-.im-section:first-child { border-top: 0; padding-top: 0; }
+.im-section:first-child { border-top: 0; margin-top: 0; }
 .im-section legend {
   display: block;
   width: 100%;
-  padding: 0 0 12px;
+  margin: 0 0 6px;
+  padding: 0;
   font-family: "Cormorant Garamond", serif;
   font-size: 1.35rem;
   font-weight: 700;
   color: var(--emerald-2);
 }
-.im-hint { margin: -8px 0 12px; font-size: 0.82rem; color: var(--text); font-weight: 400; text-transform: none; letter-spacing: 0; }
+.im-hint { margin: 0 0 12px; font-size: 0.82rem; color: var(--text); font-weight: 400; text-transform: none; letter-spacing: 0; }
 .im-subgroup-title {
   margin: 4px 0 8px;
   font-size: 0.78rem;
