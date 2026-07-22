@@ -493,8 +493,9 @@ section { padding: 64px 0; }
 }
 .cta-pointer-text {
   position: relative;
-  font-family: "Permanent Marker", cursive;
-  font-size: 2.4rem;
+  font-family: "Great Vibes", cursive;
+  font-weight: 400;
+  font-size: 3.0rem;
   line-height: 1.2;
   white-space: nowrap;
   transform: rotate(-3deg);
@@ -504,21 +505,12 @@ section { padding: 64px 0; }
   margin: 0;
   color: inherit;
   cursor: pointer;
+  text-shadow: 0 0 0 rgba(211, 166, 74, 0);
+  transition: text-shadow 0.3s ease, color 0.3s ease;
 }
-.cta-pointer-text:before {
-  content: "";
-  position: absolute;
-  inset: -26px -34px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(211, 166, 74, 0.35), transparent 70%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: -1;
-  pointer-events: none;
-}
-.cta-pointer-text:hover:before,
-.cta-pointer-text:focus-visible:before {
-  opacity: 1;
+.cta-pointer-text:hover,
+.cta-pointer-text:focus-visible {
+  text-shadow: 0 0 14px rgba(211, 166, 74, 0.85), 0 0 28px rgba(211, 166, 74, 0.5);
 }
 
 /* Footer */
@@ -556,7 +548,7 @@ footer { background: #fff; }
   transition: transform 0.15s ease;
 }
 .social-instagram:hover { background: none; transform: translateY(-2px); }
-.copyright { background: #1e5c3a; color: #fff; text-align: center; padding: 10px; font-size: 0.75rem; }
+.copyright { background: #1e5c3a; color: #fff; text-align: left; padding: 10px 24px; font-size: 0.65rem; }
 
 /* Contact Us footer spotlight */
 .page-dim-overlay {
