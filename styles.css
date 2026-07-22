@@ -132,11 +132,12 @@ h1 { font-size: clamp(2.45rem, 4.5vw, 4.3rem); line-height: 1.05; margin: 0 0 22
   text-transform: uppercase;
   letter-spacing: 0.01em;
   border-radius: 6px;
+  cursor: pointer;
   transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
 }
 .btn:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
 .btn-primary { background: var(--emerald-2); border-color: var(--emerald-2); color: #fff; }
-.btn-primary:hover { background: var(--emerald-2); }
+.btn-primary:hover { background: var(--emerald); border-color: var(--emerald); }
 
 .hero-image {
   background-image:
@@ -507,9 +508,11 @@ section { padding: 64px 0; }
   transition: text-shadow 0.3s ease, color 0.3s ease;
 }
 .cta-pointer-text:hover,
-.cta-pointer-text:focus-visible {
+.cta-pointer-text:focus-visible,
+.cta-pointer-text.glow-active {
   text-shadow: 0 0 14px rgba(211, 166, 74, 0.85), 0 0 28px rgba(211, 166, 74, 0.5);
 }
+.cta-pointer-text.glow-active { z-index: 151; }
 
 /* Footer */
 footer { background: #fff; }
@@ -548,7 +551,7 @@ footer { background: #fff; }
   background: none;
   transition: transform 0.15s ease;
 }
-.social-instagram:hover { background: none; transform: translateY(-2px); }
+.social-instagram:hover { transform: translateY(-2px); }
 .copyright {
   background: #1e5c3a;
   color: #fff;
@@ -662,7 +665,6 @@ body.modal-open { overflow: hidden; }
 .modal-form textarea:focus,
 .modal-form select:focus { outline: 2px solid var(--gold); outline-offset: 1px; border-color: var(--gold); }
 .modal-form textarea { resize: vertical; min-height: 70px; }
-.modal-form .btn { cursor: pointer; }
 .modal-status { margin: 4px 0 0; font-size: 0.85rem; color: var(--emerald-2); font-weight: 600; }
 
 .modal-success { text-align: center; padding: 20px 0 4px; }
@@ -676,7 +678,6 @@ body.modal-open { overflow: hidden; }
 }
 .modal-success h4 { font-size: 1.5rem; margin: 0 0 10px; }
 .modal-success p { font-size: 0.95rem; color: var(--text); max-width: 380px; margin: 0 auto 22px; }
-.modal-success .btn { cursor: pointer; }
 
 /* Consultation intake form sections */
 .im-section {

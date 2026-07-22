@@ -66,9 +66,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // "Contact Us" nav link: scroll to the footer contact column and spotlight it.
+  // "Contact Us" nav link: scroll to the footer contact column and spotlight
+  // it, also glowing the CTA band's "Send us a message!" text for the same
+  // duration since it's another way to get in touch.
   const contactNavLink = document.querySelector(".js-highlight-contact");
   const footerContact = document.getElementById("footer-contact");
+  const ctaPointerText = document.querySelector(".cta-pointer-text");
   if (contactNavLink && footerContact) {
     const dimOverlay = document.createElement("div");
     dimOverlay.className = "page-dim-overlay";
@@ -82,16 +85,19 @@ document.addEventListener("DOMContentLoaded", () => {
       clearTimeout(spotlightTimeout);
       dimOverlay.classList.remove("active");
       footerContact.classList.remove("spotlight-target");
+      if (ctaPointerText) ctaPointerText.classList.remove("glow-active");
 
       spotlightTimeout = setTimeout(() => {
         dimOverlay.classList.add("active");
         // Force reflow so the flash animation restarts if triggered again.
         void footerContact.offsetWidth;
         footerContact.classList.add("spotlight-target");
+        if (ctaPointerText) ctaPointerText.classList.add("glow-active");
 
         spotlightTimeout = setTimeout(() => {
           dimOverlay.classList.remove("active");
           footerContact.classList.remove("spotlight-target");
+          if (ctaPointerText) ctaPointerText.classList.remove("glow-active");
         }, SPOTLIGHT_DURATION_MS);
       }, SCROLL_SETTLE_DELAY_MS);
     });
@@ -224,7 +230,7 @@ document.addEventListener("DOMContentLoaded", () => {
       modalSuccess.hidden = false;
       modalSuccessClose.focus();
       submitBtn.disabled = false;
-    } catch (err) {
+    } catch {
       modalStatus.textContent =
         "Something went wrong. Please email us directly at info@emeraldmanagementsolutions.org.";
       submitBtn.disabled = false;
