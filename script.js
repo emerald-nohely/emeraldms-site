@@ -33,13 +33,16 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
+  // Top offset matches the sticky header height (98px) so a section only
+  // activates once its heading clears the header, not while it's still
+  // mid-page.
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) setActiveLink(entry.target.id);
       });
     },
-    { rootMargin: "-45% 0px -50% 0px" }
+    { rootMargin: "-100px 0px -70% 0px" }
   );
 
   sections.forEach((section) => observer.observe(section));
