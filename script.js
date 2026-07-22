@@ -23,9 +23,15 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Highlight the nav link matching the section currently in view
-  const sections = document.querySelectorAll("main section[id]");
+  // Highlight the nav link matching the section currently in view. Only
+  // sections with a matching nav link are observed, so sections like
+  // "how-it-works" or "contact" (no nav entry of their own) don't clear
+  // the previous link's active state while scrolled past them.
   const navLinks = document.querySelectorAll("nav a:not(.nav-cta)");
+  const navSectionIds = new Set([...navLinks].map((link) => link.getAttribute("href").slice(1)));
+  const sections = [...document.querySelectorAll("main section[id]")].filter((section) =>
+    navSectionIds.has(section.id)
+  );
 
   const setActiveLink = (id) => {
     navLinks.forEach((link) => {
