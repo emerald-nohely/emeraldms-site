@@ -22,15 +22,30 @@ function toArray(value) {
 
 function row(label, value) {
   if (!value) return "";
-  return `<tr><td style="font-weight: bold; vertical-align: top; padding-right: 12px; white-space: nowrap;">${label}</td><td>${value}</td></tr>`;
+  return `
+    <tr>
+      <td style="padding: 10px 14px; background: #f4f5f1; font-weight: 600; color: #1e5c3a; width: 200px; border-bottom: 1px solid #e6e7e1; font-size: 13px; vertical-align: top;">${label}</td>
+      <td style="padding: 10px 14px; border-bottom: 1px solid #e6e7e1; font-size: 14px; color: #2c2c2c;">${value}</td>
+    </tr>`;
 }
 
 function section(title, rowsHtml) {
   if (!rowsHtml) return "";
   return `
-    <h3 style="color: #09301f; margin: 22px 0 6px; font-size: 16px;">${title}</h3>
-    <table cellpadding="4" cellspacing="0" style="border-collapse: collapse; width: 100%;">${rowsHtml}</table>
-  `;
+    <tr>
+      <td style="padding: 0 0 20px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border: 1px solid #e2e2dc; border-radius: 8px; overflow: hidden;">
+          <tr>
+            <td style="background: #1e5c3a; color: #ffffff; padding: 10px 14px; font-size: 13px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;">${title}</td>
+          </tr>
+          <tr>
+            <td>
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">${rowsHtml}</table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>`;
 }
 
 function formatDate(value) {
@@ -111,21 +126,43 @@ module.exports = async function (context, req) {
     row("Preferred Date", formatDate(body.date)),
     row("Preferred Time", formatTime(body.time)),
     row("Additional Comments", escapeHtml(body.comments || "").replace(/\n/g, "<br>")),
+    row("Consent Given", body.consent ? "Yes" : "No"),
   ].join("");
 
   const htmlBody = `
-    <div style="font-family: Arial, sans-serif; font-size: 15px; color: #222; max-width: 640px;">
-      <h2 style="color: #09301f; margin-bottom: 4px;">New Consultation Request</h2>
-      <p style="margin: 0 0 8px; color: #555;">Submitted from the website's Schedule a Consultation form.</p>
-      ${section("Business Information", businessInfoRows)}
-      ${section("Business Overview", overviewRows)}
-      ${section("Current Challenges", challengesRows)}
-      ${section("Services of Interest", servicesRows)}
-      ${section("Current Support", currentSupportRows)}
-      ${section("Goals &amp; Priorities", goalsRows)}
-      ${section("Growth Plans", growthRows)}
-      ${section("Consultation Preferences", preferencesRows)}
-    </div>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background: #f2f2ee; padding: 24px 0; font-family: Arial, Helvetica, sans-serif;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="640" cellpadding="0" cellspacing="0" style="max-width: 640px; width: 100%; background: #ffffff; border-radius: 10px; overflow: hidden;">
+            <tr>
+              <td style="background: #1e5c3a; padding: 22px 24px;">
+                <h1 style="margin: 0; color: #ffffff; font-size: 20px;">New Consultation Request</h1>
+                <p style="margin: 4px 0 0; color: #cfe0d4; font-size: 13px;">Submitted from the website's Schedule a Consultation form</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 24px;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                  ${section("Business Information", businessInfoRows)}
+                  ${section("Business Overview", overviewRows)}
+                  ${section("Current Challenges", challengesRows)}
+                  ${section("Services of Interest", servicesRows)}
+                  ${section("Current Support", currentSupportRows)}
+                  ${section("Goals &amp; Priorities", goalsRows)}
+                  ${section("Growth Plans", growthRows)}
+                  ${section("Consultation Preferences", preferencesRows)}
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 16px 24px; background: #f7f7f4; border-top: 1px solid #eceee8;">
+                <p style="margin: 0; font-size: 12px; color: #888;">Reply directly to this email to respond to ${escapeHtml(contactName)}.</p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
   `;
 
   const payload = {
