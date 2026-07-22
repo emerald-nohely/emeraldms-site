@@ -549,7 +549,19 @@ footer { background: #fff; }
   transition: transform 0.15s ease;
 }
 .social-instagram:hover { background: none; transform: translateY(-2px); }
-.copyright { background: #1e5c3a; color: #fff; text-align: left; padding: 10px 24px; font-size: 0.65rem; }
+.copyright {
+  background: #1e5c3a;
+  color: #fff;
+  padding: 10px 24px;
+  font-size: 0.65rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.copyright-credit { color: rgba(255, 255, 255, 0.6); transition: color 0.15s ease; }
+.copyright-credit:hover { color: #fff; }
 
 /* Contact Us footer spotlight */
 .page-dim-overlay {
