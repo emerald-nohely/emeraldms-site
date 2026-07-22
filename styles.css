@@ -653,6 +653,19 @@ body.modal-open { overflow: hidden; }
 .modal-form .btn { cursor: pointer; }
 .modal-status { margin: 4px 0 0; font-size: 0.85rem; color: var(--emerald-2); font-weight: 600; }
 
+.modal-success { text-align: center; padding: 20px 0 4px; }
+.modal-success-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 18px;
+  background: #1e5c3a;
+  color: #fff;
+  font-size: 1.8rem;
+}
+.modal-success h4 { font-size: 1.5rem; margin: 0 0 10px; }
+.modal-success p { font-size: 0.95rem; color: var(--text); max-width: 380px; margin: 0 auto 22px; }
+.modal-success .btn { cursor: pointer; }
+
 /* Consultation intake form sections */
 .im-section {
   border: 0;

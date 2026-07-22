@@ -3,9 +3,6 @@
 const SCROLL_SETTLE_DELAY_MS = 500;
 // How long the footer contact spotlight stays dimmed/flashing.
 const SPOTLIGHT_DURATION_MS = 2000;
-// How long the "opening your email client" status message shows before the
-// modal auto-closes.
-const MODAL_CLOSE_DELAY_MS = 1800;
 
 document.addEventListener("DOMContentLoaded", () => {
   const menuBtn = document.querySelector(".menu-btn");
@@ -104,6 +101,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const modal = document.getElementById("consultation-modal");
   const modalForm = document.getElementById("consultation-form");
   const modalStatus = document.getElementById("modal-status");
+  const modalSuccess = document.getElementById("modal-success");
+  const modalSuccessClose = document.getElementById("modal-success-close");
   const openTriggers = document.querySelectorAll(".js-open-modal");
   const closeBtn = modal.querySelector(".modal-close");
   let lastFocused = null;
@@ -158,15 +157,26 @@ document.addEventListener("DOMContentLoaded", () => {
     modalForm.querySelector('input[name="businessName"]').focus();
   };
 
+  // Restores the form view (hidden after a successful submission) so the
+  // modal is ready to fill out again next time it's opened.
+  const resetModalView = () => {
+    modalForm.hidden = false;
+    modalSuccess.hidden = true;
+    modalStatus.hidden = true;
+    modalStatus.textContent = "";
+  };
+
   const closeModal = () => {
     modal.classList.remove("open");
     modal.setAttribute("aria-hidden", "true");
     document.body.classList.remove("modal-open");
     if (lastFocused) lastFocused.focus();
+    resetModalView();
   };
 
   openTriggers.forEach((trigger) => trigger.addEventListener("click", openModal));
   closeBtn.addEventListener("click", closeModal);
+  modalSuccessClose.addEventListener("click", closeModal);
   // Only close on a genuine backdrop click - not a text-selection drag that
   // starts inside the modal and ends (mouseup) outside it, which would
   // otherwise fire a click event targeting the overlay.
@@ -207,13 +217,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (!response.ok) throw new Error("Request failed");
 
-      modalStatus.textContent = "Thanks! We'll be in touch shortly.";
-      setTimeout(() => {
-        closeModal();
-        modalForm.reset();
-        modalStatus.hidden = true;
-        submitBtn.disabled = false;
-      }, MODAL_CLOSE_DELAY_MS);
+      modalForm.reset();
+      modalForm.hidden = true;
+      modalStatus.hidden = true;
+      modalStatus.textContent = "";
+      modalSuccess.hidden = false;
+      modalSuccessClose.focus();
+      submitBtn.disabled = false;
     } catch (err) {
       modalStatus.textContent =
         "Something went wrong. Please email us directly at info@emeraldmanagementsolutions.org.";
